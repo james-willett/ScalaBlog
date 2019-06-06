@@ -1,4 +1,4 @@
-package scalaBasics.ValuesVariablesTypes
+package scalaBasics.absoluteBasics
 
 object ValuesVariablesTypes extends App {
 
