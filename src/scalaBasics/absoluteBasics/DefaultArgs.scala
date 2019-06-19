@@ -20,11 +20,11 @@ object DefaultArgs extends App {
 
   def savePicture2(format: String = "jpg", width: Int, height: Int): Unit = println("saving picture")
 
-  savePicture2(800, 600)
+//  savePicture2(800, 600)
 
   def savePicture3(format: String = "jpg", width: Int = 1200, height: Int = 1000): Unit = println("saving picture")
 
-  savePicture3(800)
+//  savePicture3(800)
 
   savePicture3(width = 800)
 
