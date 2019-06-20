@@ -48,7 +48,7 @@ object StringOperations extends App {
   val someString = f"$x%3d"
 
   println(raw"This is a \n newline")
-  
+
   val escaped = "This is a \n newline"
   println(raw"$escaped")
 
