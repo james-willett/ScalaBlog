@@ -45,7 +45,7 @@ object StringOperations extends App {
   println(phrase)
 
   val x = 1.1f
-  val someString = f"$x%3d"
+//  val someString = f"$x%3d"
 
   println(raw"This is a \n newline")
 
