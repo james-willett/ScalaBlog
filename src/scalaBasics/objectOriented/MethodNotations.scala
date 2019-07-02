@@ -1,7 +1,7 @@
 package scalaBasics.objectOriented
 
 object MethodNotations extends App {
-  
+
   class Person(val name: String, faveMovie: String, val age: Int = 0) {
 
     def likes(movie: String): Boolean = movie == faveMovie
