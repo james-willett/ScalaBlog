@@ -17,7 +17,8 @@ abstract class MyList[+A] {
  def ++[B >: A](list: MyList[B]): MyList[B]
 }
 
-object Empty extends MyList[Nothing] {
+// 6 First we will convert this to a case object
+case object Empty extends MyList[Nothing] {
   def head: Nothing = throw new NoSuchElementException
   def tail: MyList[Nothing] = throw new NoSuchElementException
   def isEmpty: Boolean = true
@@ -32,7 +33,8 @@ object Empty extends MyList[Nothing] {
   def ++[B >: Nothing](list: MyList[B]): MyList[B] = list
 }
 
-class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
+// 7 We also convert the Cons class
+case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
   def head: A = h
   def tail: MyList[A] = t
   def isEmpty: Boolean = false
@@ -101,7 +103,14 @@ object ListTest extends App {
     override def test(elem: Int): Boolean = elem % 2 == 0
   })).toString
 
+  // 9 So lets clone this list of integers with the same values:
   val listOfIntegers4: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
+  val clonelistOfIntegers4: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
+
+  // 10 this would return true
+  println(listOfIntegers4 == clonelistOfIntegers4)
+
+
   val anotherListOfIntegers: MyList[Int] = new Cons(4, new Cons(5, Empty))
 
   println((listOfIntegers4 ++ anotherListOfIntegers).toString)
