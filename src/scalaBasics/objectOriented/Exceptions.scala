@@ -84,7 +84,7 @@ object Exceptions extends App{
 
   class OverflowException extends RuntimeException
   class UnderflowException extends RuntimeException
-  class MathCaluclationException extends RuntimeException("Division by 0")
+  class MathCalculationException extends RuntimeException("Division by 0")
 
   object PocketCalculator3 {
     def add(x: Int, y: Int) = {
