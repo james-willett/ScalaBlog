@@ -120,7 +120,7 @@ object Exceptions extends App{
   // DIVIDE
   object PocketCalculator6 {
     def divide(x: Int, y: Int) = {
-      if (y == 0) throw new MathCaluclationException
+      if (y == 0) throw new MathCalculationException
       else x / y
     }
   }
