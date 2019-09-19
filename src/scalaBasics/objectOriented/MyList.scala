@@ -86,13 +86,28 @@ object ListTest extends App {
 
   val listOfIntegers3: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
 
-  println(listOfIntegers3.map(new Function1[Int, Int] {
-    override def apply(elem: Int): Int = elem * 2
-  })).toString
+  // 17 This is the first Function X call that we are going to replace
+//  println(listOfIntegers3.map(new Function1[Int, Int] {
+//    override def apply(elem: Int): Int = elem * 2
+//  })).toString
 
-  println(listOfIntegers3.filter(new Function1[Int, Boolean] {
-    override def apply(elem: Int): Boolean = elem % 2 == 0
-  })).toString
+  // We can simply change this to:
+  println(listOfIntegers3.map(elem => elem * 2).toString)
+
+  // Or we can make an even shorter notation:
+  println(listOfIntegers3.map(_ * 2).toString)
+
+  // 18 Next we are going to replace this:
+//  println(listOfIntegers3.filter(new Function1[Int, Boolean] {
+//    override def apply(elem: Int): Boolean = elem % 2 == 0
+//  })).toString
+
+  // This we can change to:
+  println(listOfIntegers3.filter(elem => elem % 2 == 0).toString)
+
+  // Or if you want an even shorter notation:
+  println(listOfIntegers3.filter(_ % 2 == 0).toString)
+
 
   val listOfIntegers4: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
   val clonelistOfIntegers4: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
@@ -103,7 +118,14 @@ object ListTest extends App {
 
   println((listOfIntegers4 ++ anotherListOfIntegers).toString)
 
-    println(listOfIntegers4.flatMap(new Function1[Int, MyList[Int]] {
-      override def apply(elem: Int): MyList[Int] = new Cons(elem, new Cons(elem + 1, Empty))
-    }).toString)
+  // 19 Finally for the flatMap, we can change this:
+//    println(listOfIntegers4.flatMap(new Function1[Int, MyList[Int]] {
+//      override def apply(elem: Int): MyList[Int] = new Cons(elem, new Cons(elem + 1, Empty))
+//    }).toString)
+
+  // into this:
+  println(listOfIntegers4.flatMap(elem => new Cons(elem, new Cons(elem + 1, Empty))).toString)
+
+  // Now the underscore notation doesn't work for this lambda, because we use the `elem` two times in the implementation
+  // As we saw earlier, each underscore stands for a different parameter. You can't use an underscore multiple times
 }
