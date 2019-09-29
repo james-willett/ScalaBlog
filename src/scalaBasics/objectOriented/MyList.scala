@@ -14,7 +14,12 @@ abstract class MyList[+A] {
 
   def filter(predicate: A => Boolean): MyList[A]
 
- def ++[B >: A](list: MyList[B]): MyList[B]
+  def ++[B >: A](list: MyList[B]): MyList[B]
+
+  def foreach(f: A => Unit): Unit
+
+  def sort(compare: (A, A) => Int): MyList[A]
+
 }
 
 case object Empty extends MyList[Nothing] {
@@ -32,6 +37,11 @@ case object Empty extends MyList[Nothing] {
   def filter(predicate: Nothing => Boolean): MyList[Nothing] = Empty
 
   def ++[B >: Nothing](list: MyList[B]): MyList[B] = list
+
+  def foreach(f: Nothing => Unit): Unit = ()
+
+  def sort(compare: (Nothing, Nothing) => Int) = Empty
+
 }
 
 case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
@@ -56,9 +66,27 @@ case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
 
  def ++[B >: A](list: MyList[B]): MyList[B] = new Cons(h, t ++ list)
 
-    def flatMap[B](transformer: A => MyList[B]): MyList[B] = {
-      transformer(h) ++ t.flatMap(transformer)
-    }
+  def flatMap[B](transformer: A => MyList[B]): MyList[B] = {
+    transformer(h) ++ t.flatMap(transformer)
+  }
+
+  def foreach(f: A => Unit): Unit = {
+    f(h)
+    t.foreach(f)
+  }
+
+  def sort(compare: (A, A) => Int): MyList[A] = {
+
+    def insert(x: A, sortedList: MyList[A]): MyList[A] =
+      if (sortedList.isEmpty) new Cons(x, Empty)
+      else if (compare(x, sortedList.head) <= 0) new Cons(x, sortedList)
+      else new Cons(sortedList.head, insert(x, sortedList.tail))
+
+    val sortedTail = t.sort(compare)
+    insert(h, sortedTail)
+
+
+  }
 }
 
 object ListTest extends App {
@@ -86,26 +114,12 @@ object ListTest extends App {
 
   val listOfIntegers3: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
 
-  // 17 This is the first Function X call that we are going to replace
-//  println(listOfIntegers3.map(new Function1[Int, Int] {
-//    override def apply(elem: Int): Int = elem * 2
-//  })).toString
-
-  // We can simply change this to:
   println(listOfIntegers3.map(elem => elem * 2).toString)
 
-  // Or we can make an even shorter notation:
   println(listOfIntegers3.map(_ * 2).toString)
 
-  // 18 Next we are going to replace this:
-//  println(listOfIntegers3.filter(new Function1[Int, Boolean] {
-//    override def apply(elem: Int): Boolean = elem % 2 == 0
-//  })).toString
-
-  // This we can change to:
   println(listOfIntegers3.filter(elem => elem % 2 == 0).toString)
 
-  // Or if you want an even shorter notation:
   println(listOfIntegers3.filter(_ % 2 == 0).toString)
 
 
@@ -118,14 +132,7 @@ object ListTest extends App {
 
   println((listOfIntegers4 ++ anotherListOfIntegers).toString)
 
-  // 19 Finally for the flatMap, we can change this:
-//    println(listOfIntegers4.flatMap(new Function1[Int, MyList[Int]] {
-//      override def apply(elem: Int): MyList[Int] = new Cons(elem, new Cons(elem + 1, Empty))
-//    }).toString)
-
-  // into this:
   println(listOfIntegers4.flatMap(elem => new Cons(elem, new Cons(elem + 1, Empty))).toString)
 
-  // Now the underscore notation doesn't work for this lambda, because we use the `elem` two times in the implementation
-  // As we saw earlier, each underscore stands for a different parameter. You can't use an underscore multiple times
+
 }
